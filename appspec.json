@@ -2,25 +2,26 @@
   "version": "1.2",
   "settings": [
     {
-      "id": "sdk",
-      "name": "The name of the MoveApps SDK",
-      "description": "Showcase requesting a string input from the users of your app.",
-      "defaultValue": "MoveApps SDK",
-      "type": "STRING"
+      "id": "sleepduration",
+      "name": "Minimum duration of 'sleeping' behaviour",
+      "description": "Define the shortest possible duration of stationary behaviour (in hours) categorised as 'sleeping'.",
+      "defaultValue": 4,
+      "type": "DOUBLE"
     },
     {
-      "id": "year",
-      "name": "The year",
-      "description": "Insert description for the year setting setting",
-      "defaultValue": 2022,
-      "type": "INTEGER"
+      "id": "sleepdist",
+      "name": "Assignment distance for sleepspots",
+      "description": "Define the maximum proximity (in metres) from a cluster at which a sleepspot will be assigned to it.",
+      "defaultValue": 250,
+      "type": "DOUBLE"
     },
     {
-      "id": "auxiliary-file-a",
-      "name": "Personalization",
-      "description": "You can personalize the app by providing a file",
-      "type": "USER_FILE"
-    }
+      "id": "stationary_dist",
+      "name": "Maximum distance of movement for 'stationary' classification",
+      "description": "Define the maximum distance (in metres) moved below which the location will be considered to be 'stationary' behaviour.",
+      "defaultValue": 25,
+      "type": "DOUBLE"
+    },
   ],
   "dependencies": {
     "R": [
@@ -29,14 +30,28 @@
       },
       {
         "name": "move2"
+      },
+      {
+        "name": "magrittr"
+      },
+      {
+        "name": "dplyr"
+      },
+      {
+        "name": "sf"
+      },
+      {
+        "name": "units"
+      },
+      {
+        "name": "data.table"
+      },
+      {
+        "name": "Gmedian"
       }
     ]
   },
   "providedAppFiles": [
-    {
-      "settingId": "auxiliary-file-a",
-      "from": "data/auxiliary/user-files/provided-app-files/auxiliary-file-a/sample.txt"
-    }
   ],
   "license": {
     "key": "MIT"
@@ -48,30 +63,25 @@
   ],
   "people": [
     {
-      "firstName": "Charles",
-      "middleInitials": null,
-      "lastName": "Darwin",
-      "email": "creator@example.com",
+      "firstName": "Callum",
+      "middleInitials": "J.",
+      "lastName": "Clarke",
+      "email": "cjosephclarke@outlook.com",
       "roles": [
         "author",
         "creator"
       ],
       "orcid": null,
-      "affiliation": null,
+      "affiliation": "University of St Andrews",
       "affiliationRor": null
     }
   ],
   "funding": [
     {
-      "name": "funder name",
-      "comment": "grant for App"
+      "name": "University of St Andrews",
+      "comment": ""
     }
   ],
   "references": [
-    {
-      "type": "IsDescribedBy",
-      "note": "Darwin, C. 1900. The creation. Journal XY. 1-2",
-      "url": "https://anylink.xyz"
-    }
   ]
 }
