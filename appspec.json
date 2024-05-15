@@ -21,7 +21,7 @@
       "description": "Define the maximum distance (in metres) moved below which the location will be considered to be 'stationary' behaviour.",
       "defaultValue": 25,
       "type": "DOUBLE"
-    },
+    }
   ],
   "dependencies": {
     "R": [
@@ -79,7 +79,7 @@
   "funding": [
     {
       "name": "University of St Andrews",
-      "comment": ""
+      "comment": "NA"
     }
   ],
   "references": [
