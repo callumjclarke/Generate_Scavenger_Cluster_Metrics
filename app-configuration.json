@@ -1,5 +1,6 @@
 {
     "sleepduration": 4,
     "sleepdist": 250,
-    "stationary_dist": 25
+    "stationary_dist": 25,
+    "runProbModel": true
 }

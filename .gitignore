@@ -8,3 +8,5 @@ data/output/**
 tests/testthat/plot.png
 testrun.R
 data/raw/hyena_clusts.rds
+data/auxiliary/user-files/uploaded-app-files/modelfit/model.rds
+data/auxiliary/user-files/uploaded-app-files/modelfit/.keep

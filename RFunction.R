@@ -4,6 +4,7 @@ library('magrittr')
 library('dplyr')
 library('sf')
 library('units')
+library('mgcv')
 
 # Shortened 'not in':
 `%!in%` <- Negate(`%in%`)
@@ -53,7 +54,9 @@ calcGMedianSF <- function(data) {
 rFunction = function(data, 
                      sleepduration,
                      sleepdist,
-                     stationary_dist
+                     stationary_dist,
+                     runProbModel = FALSE,
+                     model
                      ) {
   
 
@@ -259,8 +262,47 @@ rFunction = function(data,
     left_join(newrevs, by = "xy.clust")
   
   
+  
   # ///////////////////////////////////////////////////
-  # 6. Returning output -----
+  # 6. Applying probability model, if selected -----
+  # ///////////////////////////////////////////////////
+  
+  if (runProbModel == TRUE) {
+    logger.info("Probability-modelling step selected. Attempting to run prediction model")
+    
+    # Check that user has supplied model:
+    modelpath <- getAuxiliaryFilePath("modelfit")
+    if (is.null(modelpath)) {
+      logger.warning("No model has been provided by the user. This step cannot be completed")
+      clustertable %<>% mutate(
+        preds = NA
+      )
+      
+    } else {
+      model <- readRDS(modelpath)
+      if ("lm" %!in% class(model)) {
+        logger.warning("Provided model is not of 'lm' format. Predictions may fail - please check input model")
+      }
+      
+      clustertable %<>% mutate(
+        preds = predict(model, clustertable) %>% 
+          plogis()
+      )
+     
+      
+    }
+    
+    
+  } else {
+    clustertable %<>% mutate(
+      preds = NA
+    )
+  }
+  
+  
+  
+  # ///////////////////////////////////////////////////
+  # 7. Returning output -----
   # ///////////////////////////////////////////////////
   
   logger.info("[6] Returning output")
