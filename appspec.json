@@ -65,7 +65,7 @@
   "providedAppFiles": [
     {
       "settingId": "model",
-      "from": "data/auxiliary/user-files/uploaded-app-files/modelfit/"
+      "from": "data/auxiliary/user-files/provided-app-files/modelfit/"
     }
   ],
   "license": {
