@@ -58,6 +58,8 @@ The output consists of:
 
 -   `Maximum Distance of Movement for Stationary Classification:` The greatest distance travelled (in metres) between two locations below which the first location will be given a 'stationary' classification. This stationary classification is used in sleepspot identification. Defaults to 25m.
 
+-   `Run Probability Model:` Select this option to run the user-provided probability model. If deselected, an NA column named `preds` will still be appended to the data.
+
 ### Most common errors
 
 -   If a user-provided probability model is to be used, this must be:

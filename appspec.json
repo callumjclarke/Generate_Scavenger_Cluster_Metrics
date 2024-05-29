@@ -23,6 +23,13 @@
       "type": "DOUBLE"
     },
     {
+      "id": "runProbModel",
+      "name": "Run provided probability model",
+      "description": "Select this to run the user-provided probability model (or fallback, if none are provided). Do not select if no such model is required. '.",
+      "defaultValue": true,
+    },
+
+    {
       "id": "model",
       "name": "Model Object",
       "description": "Please supply a linear model (lm) object for prediction.",
