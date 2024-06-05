@@ -25,10 +25,10 @@
     {
       "id": "runProbModel",
       "name": "Run provided probability model",
-      "description": "Select this to run the user-provided probability model (or fallback, if none are provided). Do not select if no such model is required. '.",
+      "description": "Select this to run the user-provided probability model (or fallback, if none are provided). Do not select if no such model is required.",
       "defaultValue": true,
+      "type": "CHECKBOX"
     },
-
     {
       "id": "model",
       "name": "Model Object",

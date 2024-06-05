@@ -55,7 +55,7 @@ rFunction = function(data,
                      sleepduration,
                      sleepdist,
                      stationary_dist,
-                     runProbModel = FALSE,
+                     runProbModel,
                      model
                      ) {
   
