@@ -59,7 +59,6 @@ rFunction = function(data,
                      model
                      ) {
   
-
   
   # ///////////////////////////////////////////////////
   # 1. Check that xy.clust is in data (write later) + other input checks  ----
@@ -273,7 +272,7 @@ rFunction = function(data,
     # Check that user has supplied model:
     modelpath <- getAuxiliaryFilePath("modelfit")
     if (is.null(modelpath)) {
-      logger.warning("No model has been provided by the user. This step cannot be completed")
+      logger.warn("No model has been provided by the user. This step cannot be completed")
       clustertable %<>% mutate(
         preds = NA
       )
@@ -281,7 +280,7 @@ rFunction = function(data,
     } else {
       model <- readRDS(modelpath)
       if ("lm" %!in% class(model)) {
-        logger.warning("Provided model is not of 'lm' format. Predictions may fail - please check input model")
+        logger.warn("Provided model is not of 'lm' format. Predictions may fail - please check input model")
       }
       
       clustertable %<>% mutate(
