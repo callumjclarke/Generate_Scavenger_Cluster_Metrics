@@ -61,7 +61,7 @@ rFunction = function(data,
   
   
   # ///////////////////////////////////////////////////
-  # 1. Check that xy.clust is in data (write later) + other input checks  ----
+  # 1. Check that clust_id is in data (write later) + other input checks  ----
   # ///////////////////////////////////////////////////
   
   logger.info("[1] Running input checks")
@@ -109,8 +109,8 @@ rFunction = function(data,
     ) 
   
   clustertable <- newdat %>%
-    filter(!is.na(xy.clust)) %>%
-    group_by(xy.clust) %>%
+    filter(!is.na(clust_id)) %>%
+    group_by(clust_id) %>%
     summarise(
       geometry = st_union(geometry),
       all_cluster_points = geometry,
@@ -176,23 +176,23 @@ rFunction = function(data,
     )
   
   clustcent <- clustertable %>%
-    select(c("xy.clust", "geometry")) %>%
+    select(c("clust_id", "geometry")) %>%
     st_buffer(250) %>%
     st_intersects(stat) %>%
     as.data.frame() %>%
     left_join(
       clustertable %>% 
         mutate(row.id = row_number()) %>%
-        select(c("xy.clust", "row.id")),
+        select(c("clust_id", "row.id")),
       by = "row.id"
     ) %>%
     as.data.frame() %>%
-    group_by(xy.clust) %>%
+    group_by(clust_id) %>%
     summarise(
       sleepspots = n()
     ) 
   clustertable %<>% 
-    left_join(clustcent, by = "xy.clust") %>%
+    left_join(clustcent, by = "clust_id") %>%
     mutate(
       sleepspots = ifelse(is.na(sleepspots), 0, sleepspots)
     )
@@ -209,21 +209,21 @@ rFunction = function(data,
     as.data.frame() %>%
     group_by(ID) %>%
     mutate(
-      clustrun = data.table::rleid(xy.clust)
+      clustrun = data.table::rleid(clust_id)
     ) %>%
-    filter(!is.na(xy.clust)) %>%
+    filter(!is.na(clust_id)) %>%
     group_by(ID, clustrun) %>%
     summarise(
-      xy.clust = first(xy.clust),
+      clust_id = first(clust_id),
       visitdur = sum(timediff_hrs, na.rm = T),
       .groups = "drop"
     ) %>%
-    group_by(xy.clust) %>%
+    group_by(clust_id) %>%
     summarise(
       mean_visit_duration = mean(visitdur, na.rm = T)
     )
   clustertable %<>% 
-    left_join(clusttimes, by = "xy.clust")
+    left_join(clusttimes, by = "clust_id")
   
   
   # ///////////////////////////////////////////////////
@@ -237,28 +237,28 @@ rFunction = function(data,
     mutate(firstloc = case_when(
       # Identify 'first location' in each cluster visit
       # i.e. in cluster but previous location isn't 
-      !is.na(xy.clust) &
-        (lag(xy.clust) != xy.clust | 
-           is.na(lag(xy.clust))) ~ 1,
+      !is.na(clust_id) &
+        (lag(clust_id) != clust_id | 
+           is.na(lag(clust_id))) ~ 1,
       TRUE ~ 0
     )) %>%
     
     # Now calculate revisit times 
     # Remove non-cluster locations:
-    filter(!is.na(xy.clust)) %>%
-    group_by(ID, xy.clust) %>%
+    filter(!is.na(clust_id)) %>%
+    group_by(ID, clust_id) %>%
     mutate(
       newlags = difftime(timestamp, lag(timestamp), units = "hours")
     ) %>%
     filter(firstloc == 1) %>%
     as.data.frame() %>%
-    group_by(xy.clust) %>%
+    group_by(clust_id) %>%
     summarise(
       nrevisits = n() - 1,
       mean_revisit_time = mean(newlags, na.rm = T),
     )
   clustertable %<>% 
-    left_join(newrevs, by = "xy.clust")
+    left_join(newrevs, by = "clust_id")
   
   
   
@@ -270,7 +270,7 @@ rFunction = function(data,
     logger.info("Probability-modelling step selected. Attempting to run prediction model")
     
     # Check that user has supplied model:
-    modelpath <- getAuxiliaryFilePath("modelfit")
+    modelpath <- getAuxiliaryFilePath("model")
     if (is.null(modelpath)) {
       logger.warn("No model has been provided by the user. This step cannot be completed")
       clustertable %<>% mutate(
